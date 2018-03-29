@@ -2,15 +2,12 @@
 // ============================
 var Headline = require("../models").Headline;
 
+var ObjectID = require('nekodb').client.ObjectID
+
 module.exports = {
 	// Find all headlines, sort them by date
 	findAll: function(req, res) {
-		// seems like Mongoose automatically handles converting 'false' to false
-		// that's pretty nice. we'll have to do it ourselves with neko
-		var query = {
-			saved: req.query.saved === 'false' ? false : true
-		}
-		Headline.find(query)
+		Headline.find(req.query)
 		.sort({ date: -1 })
 		.then(headlines => {
 			res.json(headlines);
@@ -39,7 +36,7 @@ module.exports = {
 			// `saved` is coming back to us as a string, so we'll need to convert it to a boolean
 			// if using an ajax framework like axios, which sends JSON by default, you wouldn't
 			// need to do this
-			headline.saved = req.body.saved === 'true' ? true : false;
+			headline.saved = req.body.saved
 			// save the update to the database
 			return headline.save();
 		})

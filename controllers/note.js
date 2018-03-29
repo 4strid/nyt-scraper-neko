@@ -4,10 +4,10 @@ var Note = require("../models").Note;
 
 module.exports = {
 	// Find one note
-	findOne: function (req, res) {
-		Note.findOne(req.query)
-		.then(note => {
-			res.json(note);
+	findAll: function (req, res) {
+		Note.find({_headline: req.params.id})
+		.then(notes => {
+			res.json(notes);
 		})
 		.catch(err => {
 			console.error(err);
